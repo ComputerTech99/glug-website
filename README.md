@@ -91,19 +91,26 @@ Anything marked `TODO-REAL` is placeholder content to replace.
 
 ## How deployment works
 
-- Hosted on **Cloudflare Pages** (free). Every push to `main` builds and deploys the site.
+- Hosted on **GitHub Pages** (free) at **https://computertech99.github.io/glug-website/**.
+- **Deploy** (`.github/workflows/deploy.yml`) builds and publishes the site on every push to `main`, and again every night at 00:30 IST so past events move to the archive on their own.
 - **CI** (`.github/workflows/ci.yml`) runs the content check, unit tests, browser tests and Lighthouse on every push and pull request.
-- **Daily rebuild** (`.github/workflows/daily-rebuild.yml`) hits a Cloudflare deploy hook every night so past events move to the archive.
 
-> **Heads-up: GitHub pauses scheduled workflows after 60 days with no commits.** If the repo goes quiet (e.g. over a semester break), the nightly rebuild stops and past events stop moving to the archive. Fix: GitHub → **Actions → Daily rebuild → Enable workflow**, or just push any commit. You can also run it by hand there with **Run workflow**.
+> **Heads-up: GitHub pauses scheduled workflows after 60 days with no commits.** If the repo goes quiet (e.g. over a semester break), the nightly rebuild stops and past events stop moving to the archive. Fix: GitHub → **Actions → Deploy to GitHub Pages → Enable workflow**, or push any commit. You can also run it by hand there with **Run workflow**.
 
 ### One-time setup
 
-1. Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to Git** → pick this repo.
-2. Build command `npm run build`, output directory `dist`, environment variable `NODE_VERSION=24`.
-3. In the Pages project: **Settings → Builds → Deploy hooks → Add** (branch `main`). Copy the URL.
-4. GitHub repo → **Settings → Secrets and variables → Actions → New secret** named `CF_DEPLOY_HOOK` with that URL.
-5. If you use a custom domain, update `site` in `astro.config.mjs` and the `Sitemap:` line in `public/robots.txt`.
+1. The repo must be **public** (GitHub Pages on free accounts only works for public repos).
+2. GitHub repo → **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+3. Push to `main` (or run the Deploy workflow by hand). The site appears at the URL above.
+
+### Custom domain (optional, later)
+
+1. Settings → Pages → Custom domain, and add the DNS records GitHub shows.
+2. In `.github/workflows/deploy.yml`, set `GLUG_SITE` to your domain (e.g. `https://glug.example.org`) and `GLUG_BASE` to `/`.
+
+### Links in code
+
+The site lives under `/glug-website/` on GitHub Pages, so never hard-code internal links like `href="/events/"`. Use the helper: `import { url } from '../lib/url'` → `href={url('/events/')}`. The browser tests crawl a `/glug-website/` build and fail on any link that escapes it.
 
 ### Testing knob
 

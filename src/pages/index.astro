@@ -1,8 +1,28 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Logo from '../components/Logo.astro';
+import Button from '../components/Button.astro';
+import Ticker from '../components/Ticker.astro';
+import SectionHead from '../components/SectionHead.astro';
+import EventCard from '../components/EventCard.astro';
+import Stats from '../components/Stats.astro';
+import { splitEvents } from '../lib/events';
+import { buildNow } from '../lib/now';
+import { SITE } from '../data/site';
+
+const { upcoming, past } = splitEvents(await getCollection('events'), buildNow());
+const next = upcoming.slice(0, 3);
+const archive = past.slice(0, 4);
+
+const WHAT = [
+  { title: 'Workshops', text: 'Linux, Git, the shell and dev tooling. Hands-on, laptops open.' },
+  { title: 'Install Fests', text: 'We help you move to Linux. Dual-boot without fear.' },
+  { title: 'Contribute', text: 'First PRs, Hacktoberfest and GSoC prep with mentors.' },
+  { title: 'Community', text: 'FSMK, talks, hack nights and people who care about software freedom.' },
+];
 ---
-<Base title="GLUG FET-JU — GNU/Linux Users Group, Jain University" description="GLUG FET-JU is the GNU/Linux Users Group at the Faculty of Engineering & Technology, Jain University. Workshops, install fests and open source contributions.">
+<Base title="GLUG FET-JU — GNU/Linux Users Group, Jain University" description={SITE.description}>
   <main id="main">
     <section class="hero wrap">
       <div class="hero-text">
@@ -12,9 +32,66 @@ import Logo from '../components/Logo.astro';
           <span class="line">as in</span>
           <span class="line"><em>freedom.</em></span>
         </h1>
+        <div class="actions">
+          <Button href="/join/">Join GLUG →</Button>
+          <Button href="/events/" variant="ghost">See events</Button>
+        </div>
       </div>
       <div class="tux-card">
         <Logo variant="full" animate />
+      </div>
+    </section>
+
+    <Ticker items={['Linux', 'Git', 'Open Source', 'Workshops', 'Install Fests', 'Hacktoberfest', 'FOSS']} />
+
+    <section id="upcoming" class="section wrap">
+      <SectionHead num="01" label="Upcoming" title="Next up" intro="Workshops, talks and hack nights. Open to everyone at FET — no Linux experience needed." />
+      {next.length > 0 ? (
+        <div class="cards">{next.map((e) => <EventCard event={e} />)}</div>
+      ) : (
+        <p class="empty mono">Nothing scheduled right now — <a href={SITE.socials.linkedin} target="_blank" rel="noopener">follow us on LinkedIn</a> for the next one.</p>
+      )}
+    </section>
+
+    <section class="section wrap flush-top">
+      <SectionHead num="02" label="What we do" intro="We learn in the open, teach what we learn, and give back to the projects we use every day.">
+        <Fragment slot="title">Not a club.<br />A commit history.</Fragment>
+      </SectionHead>
+      <ol class="what">
+        {WHAT.map((w, i) => (
+          <li>
+            <span class="n mono">[0{i + 1}]</span>
+            <h3>{w.title}</h3>
+            <p>{w.text}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <div class="wrap">
+      <Stats items={[
+        { value: SITE.stats.members, suffix: '+', label: 'Members' },
+        { value: SITE.stats.events, suffix: '+', label: 'Events' },
+        { value: SITE.stats.years, label: 'Years' },
+        { value: '∞', label: 'Distro debates' },
+      ]} />
+    </div>
+
+    {archive.length > 0 && (
+      <section id="archive" class="section wrap">
+        <SectionHead num="03" label="Archive" intro="Install fests, talks and hack nights we've already run.">
+          <Fragment slot="title">Been there, <em>shipped</em> that</Fragment>
+        </SectionHead>
+        <div class="cards cards--4">{archive.map((e) => <EventCard event={e} />)}</div>
+        <p class="more"><Button href="/events/" variant="ghost">All past events →</Button></p>
+      </section>
+    )}
+
+    <section id="join-cta" class="cta grid-bg">
+      <div class="wrap">
+        <p class="lbl"><i>04</i> Join</p>
+        <h2 class="h-display">Your first commit<br />starts <em>here.</em></h2>
+        <Button href="/join/" class="on-dark">Join GLUG →</Button>
       </div>
     </section>
   </main>
@@ -24,16 +101,17 @@ import Logo from '../components/Logo.astro';
   .hero {
     min-height: calc(100svh - 90px);
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: end;
     gap: 48px;
-    padding-block: 12vh 10vh;
+    padding-block: 10vh 10vh;
   }
-  h1 { font-size: clamp(56px, 13vw, 220px); margin: 28px 0 56px; }
+  h1 { font-size: clamp(56px, 11vw, 200px); margin: 28px 0 56px; overflow-wrap: break-word; }
   .line { display: block; animation: rise 0.7s cubic-bezier(.2,.7,.2,1) both; }
   .line:nth-child(2) { animation-delay: 80ms; }
   .line:nth-child(3) { animation-delay: 160ms; }
   @keyframes rise { from { opacity: 0; transform: translateY(0.4em); } }
+  .actions { display: flex; gap: 32px; align-items: center; flex-wrap: wrap; }
   .tux-card {
     width: 260px;
     background: var(--white);
@@ -42,8 +120,36 @@ import Logo from '../components/Logo.astro';
     padding: 24px;
     color: var(--ink);
   }
+
+  .section { padding-block: var(--section-pad); }
+  .flush-top { padding-top: 0; }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+  .cards--4 { grid-template-columns: repeat(4, 1fr); gap: 28px; }
+  .empty { font-size: 15px; border: 2px dashed var(--line); padding: 32px; }
+  .empty a { color: var(--ink); text-decoration-color: var(--sig); text-underline-offset: 4px; }
+  .more { margin: 40px 0 0; }
+
+  .what { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); }
+  .what li { padding: 40px 32px 0 0; }
+  .what .n { color: var(--sig); font-size: 12px; }
+  .what h3 { font-size: 28px; letter-spacing: -0.03em; margin: 72px 0 14px; }
+  .what p { font-size: 15px; line-height: 1.6; color: var(--muted); margin: 0; max-width: 260px; }
+
+  .cta { background-color: var(--ink); color: var(--paper); padding-block: clamp(120px, 22vh, 240px); margin-top: var(--section-pad);
+    background-image: linear-gradient(rgb(244 241 234 / 0.06) 1px, transparent 1px), linear-gradient(90deg, rgb(244 241 234 / 0.06) 1px, transparent 1px); }
+  .cta .lbl { color: rgb(244 241 234 / 0.6); }
+  .cta h2 { font-size: clamp(52px, 10vw, 168px); margin: 24px 0 64px; }
+
+  @media (max-width: 1100px) { .cards--4 { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 900px) {
-    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero { grid-template-columns: 1fr; min-height: auto; padding-block: 6vh 8vh; }
     .tux-card { width: 180px; padding: 16px; }
+    .cards { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 82%; overflow-x: auto; gap: 20px;
+      scroll-snap-type: x mandatory; padding: 4px 12px 20px 4px; margin-inline: -4px; }
+    .cards > :global(*) { scroll-snap-align: start; }
+    .cards--4 { grid-auto-flow: row; grid-template-columns: 1fr 1fr; overflow: visible; }
+    .what { grid-template-columns: 1fr 1fr; row-gap: 24px; }
+    .what h3 { margin-top: 40px; }
   }
+  @media (max-width: 560px) { .cards--4 { grid-template-columns: 1fr; } }
 </style>

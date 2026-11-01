@@ -111,6 +111,10 @@ const WHAT = [
   .line:nth-child(2) { animation-delay: 80ms; }
   .line:nth-child(3) { animation-delay: 160ms; }
   @keyframes rise { from { opacity: 0; transform: translateY(0.4em); } }
+  /* When the logo intro plays, the headline rises as the intro slides away */
+  :global(html.intro) .line { animation-delay: 2.15s; }
+  :global(html.intro) .line:nth-child(2) { animation-delay: 2.23s; }
+  :global(html.intro) .line:nth-child(3) { animation-delay: 2.31s; }
   .actions { display: flex; gap: 32px; align-items: center; flex-wrap: wrap; }
   .tux-card {
     width: 260px;
@@ -150,6 +154,11 @@ const WHAT = [
     .what { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 24px; }
     .what li { padding-right: 16px; }
     .what h3 { margin-top: 40px; font-size: clamp(20px, 6vw, 28px); }
+  }
+  @media (max-width: 760px) {
+    .tux-card { display: none; }
+    .hero { min-height: auto; padding-block: 9vh 10vh; }
+    h1 { font-size: clamp(56px, 17.5vw, 120px); margin: 24px 0 48px; }
   }
   @media (max-width: 560px) { .cards--4 { grid-template-columns: 1fr; } .cta { padding-block: 96px; } #archive { padding-bottom: 96px; } }
 </style>

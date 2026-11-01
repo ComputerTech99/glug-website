@@ -1,0 +1,76 @@
+---
+import Logo from './Logo.astro';
+import { SITE } from '../data/site';
+---
+<!--
+  First-visit logo intro. Hidden unless the inline script in <head> adds
+  html.intro (JS on, motion allowed, first page of this browser session).
+-->
+<div class="intro-overlay on-ink grid-bg" aria-hidden="true">
+  <div class="intro-card"><Logo variant="full" animate title="" /></div>
+  <p class="intro-name mono">{SITE.shortName}</p>
+  <span class="intro-bar"></span>
+</div>
+
+<script is:inline>
+  (function () {
+    var html = document.documentElement;
+    if (!html.classList.contains('intro')) return;
+    var done = function () { html.classList.remove('intro'); };
+    var overlay = document.querySelector('.intro-overlay');
+    if (overlay) overlay.addEventListener('click', done);
+    setTimeout(done, 2700);
+  })();
+</script>
+
+<style>
+  .intro-overlay { display: none; }
+  :global(html.intro) .intro-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    cursor: pointer;
+    animation: intro-out 0.7s cubic-bezier(0.7, 0, 0.2, 1) 1.95s forwards;
+  }
+  :global(html.intro) { overflow: hidden; }
+  .intro-card {
+    width: min(56vw, 240px);
+    background: var(--white);
+    color: var(--ink);
+    border: 2px solid var(--paper);
+    box-shadow: 8px 8px 0 var(--sig);
+    padding: 20px;
+    animation: card-in 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .intro-name {
+    margin: 0;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    opacity: 0;
+    animation: fade-up 0.5s ease 1.2s forwards;
+  }
+  .intro-bar {
+    width: min(56vw, 240px);
+    height: 2px;
+    background: var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .intro-bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--sig);
+    transform-origin: left;
+    animation: bar 1.8s cubic-bezier(0.6, 0, 0.3, 1) forwards;
+  }
+  @keyframes intro-out { to { transform: translateY(-100%); } }
+  @keyframes card-in { from { opacity: 0; transform: translateY(16px) scale(0.96); } }
+  @keyframes fade-up { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @keyframes bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+</style>

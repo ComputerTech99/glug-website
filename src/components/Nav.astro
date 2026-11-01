@@ -26,9 +26,19 @@ const current = (href: string) => (path.startsWith(href) ? 'page' : undefined);
       <button class="close-btn mono" type="button">Close ✕</button>
     </div>
     <nav class="overlay-links wrap" aria-label="Mobile">
-      {NAV_LINKS.map((l) => <a class="h-display" href={l.href} aria-current={current(l.href)}>{l.label}</a>)}
-      <a class="h-display join" href={JOIN_LINK.href}>{JOIN_LINK.label} →</a>
+      {NAV_LINKS.map((l, i) => (
+        <a href={l.href} aria-current={current(l.href)}><span class="num mono">0{i + 1}</span><span class="h-display">{l.label}</span></a>
+      ))}
+      <a class="join" href={JOIN_LINK.href} aria-current={current(JOIN_LINK.href)}><span class="num mono">0{NAV_LINKS.length + 1}</span><span class="h-display">{JOIN_LINK.label} →</span></a>
     </nav>
+    <div class="overlay-foot wrap mono">
+      <p>Free as in freedom.</p>
+      <p class="socials">
+        <a href={SITE.socials.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+        <a href={SITE.socials.github} target="_blank" rel="noopener">GitHub</a>
+        <a href={SITE.socials.instagram} target="_blank" rel="noopener">Instagram</a>
+      </p>
+    </div>
   </div>
 </header>
 </div>
@@ -90,9 +100,23 @@ const current = (href: string) => (path.startsWith(href) ? 'page' : undefined);
   /* .wrap uses margin-inline:auto, which shrink-wraps flex items in a column; force full width */
   .overlay > .wrap { width: 100%; }
   .overlay-top { display: flex; justify-content: space-between; align-items: center; padding-block: 24px; font-size: 13px; }
-  .overlay-links { display: flex; flex-direction: column; gap: 12px; margin-top: auto; padding-bottom: 12vh; }
-  .overlay-links a { font-size: clamp(44px, 13vw, 72px); text-decoration: none; }
-  .overlay-links a[aria-current='page'], .overlay-links .join { color: var(--sig-display); }
+  .overlay-links { display: flex; flex-direction: column; margin-top: clamp(24px, 6vh, 56px); }
+  .overlay-links a:first-child { border-top: 1px solid var(--line); }
+  .overlay-links a {
+    display: flex; align-items: baseline; gap: 16px;
+    padding: 14px 0; border-bottom: 1px solid var(--line);
+    text-decoration: none;
+  }
+  .overlay-links .h-display { font-size: clamp(36px, 11vw, 64px); }
+  .overlay-links .num { font-size: 12px; color: var(--muted); min-width: 2ch; }
+  .overlay-links a[aria-current='page'] .h-display { color: var(--sig); }
+  .overlay-links a[aria-current='page'] .num { color: var(--sig); }
+  .overlay-links .join .h-display { color: var(--sig); }
+  .overlay-foot { margin-top: auto; padding-block: 24px 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--muted); }
+  .overlay-foot p { margin: 0; }
+  .overlay-foot .socials { display: flex; gap: 18px; }
+  .overlay-foot a { text-decoration: none; color: var(--paper); }
+  .overlay { overflow-y: auto; }
   @media (max-width: 760px) {
     .nav-links { display: none; }
     .menu-btn { display: inline-block; }

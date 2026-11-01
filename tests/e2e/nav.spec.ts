@@ -38,6 +38,14 @@ test.describe('mobile menu layout', () => {
     const link = await overlay.getByRole('link', { name: 'Events' }).boundingBox();
     expect(link!.x).toBeLessThan(40);
   });
+
+  test('menu links start near the top, not pushed to the bottom', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: /menu/i }).click();
+    const first = await page.locator('#mobile-menu').getByRole('link', { name: 'Events' }).boundingBox();
+    expect(first!.y).toBeLessThan(240);
+    await expect(page.locator('#mobile-menu .overlay-foot')).toContainText('LinkedIn');
+  });
 });
 
 test.describe('desktop nav', () => {

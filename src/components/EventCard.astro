@@ -12,7 +12,7 @@ const TYPE_LABEL: Record<string, string> = {
   workshop: 'Workshop', talk: 'Talk', hacknight: 'Hack Night', installfest: 'Install Fest', other: 'Event',
 };
 ---
-<article class="event-card" data-type={type}>
+<article class:list={['event-card', { 'on-ink': !upcoming }]} data-type={type}>
   <a href={`/events/${event.id}/`} class="card-link">
     <div class="top mono">
       <time datetime={date.toISOString()}>{formatEventDate(date)}</time>
@@ -39,6 +39,11 @@ const TYPE_LABEL: Record<string, string> = {
     min-width: 0;
   }
   .event-card:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0 var(--ink); }
+  .event-card.on-ink { background: var(--ink); color: var(--paper); box-shadow: 6px 6px 0 var(--sig); }
+  .event-card.on-ink:hover { box-shadow: 9px 9px 0 var(--sig); }
+  .on-ink .top, .on-ink .poster { border-bottom-color: var(--line); }
+  .on-ink .tag { background: var(--line); color: var(--paper); }
+  .on-ink .poster-fallback { background-color: var(--ink); }
   .card-link { display: flex; flex-direction: column; height: 100%; text-decoration: none; color: inherit; }
   .top { display: flex; justify-content: space-between; gap: 12px; padding: 14px 18px; font-size: 12px; border-bottom: 2px solid var(--ink); }
   .tag { color: var(--ink); background: var(--paper); padding: 0 6px; text-transform: uppercase; letter-spacing: 0.06em; }

@@ -47,9 +47,17 @@ test('sitemap and robots exist', async ({ request }) => {
 });
 
 test('keyboard focus outline is contrast-safe on light backgrounds', async ({ page }) => {
-  await page.goto('/about/');
+  await page.goto('/'); // home nav is on cream
   await page.keyboard.press('Tab'); // skip link
-  await page.keyboard.press('Tab'); // brand link (on paper)
+  await page.keyboard.press('Tab'); // brand link
   const color = await page.evaluate(() => getComputedStyle(document.activeElement!).outlineColor);
   expect(color).toBe('rgb(199, 58, 10)'); // --sig-text, 4.61:1 on paper
+});
+
+test('keyboard focus outline uses bright orange on dark backgrounds', async ({ page }) => {
+  await page.goto('/about/'); // inner-page nav is on ink
+  await page.keyboard.press('Tab');
+  await page.keyboard.press('Tab');
+  const color = await page.evaluate(() => getComputedStyle(document.activeElement!).outlineColor);
+  expect(color).toBe('rgb(255, 90, 31)'); // --sig, 5.91:1 on ink
 });

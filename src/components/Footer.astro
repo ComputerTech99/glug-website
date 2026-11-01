@@ -3,6 +3,7 @@ import { NAV_LINKS, JOIN_LINK } from '../lib/nav';
 import { SITE } from '../data/site';
 const year = new Date().getFullYear();
 ---
+<div class="site-footer-band on-ink">
 <footer class="site-footer wrap mono">
   <nav aria-label="Footer" class="foot-links">
     {[...NAV_LINKS, JOIN_LINK].map((l) => <a href={l.href}>{l.label}</a>)}
@@ -16,10 +17,12 @@ const year = new Date().getFullYear();
     </span>
   </div>
 </footer>
+</div>
 
 <style>
-  .site-footer { padding-block: 48px 40px; font-size: 12px; color: var(--muted); display: grid; gap: 28px; }
-  .foot-links { display: flex; flex-wrap: wrap; gap: 12px 28px; font-size: 13px; color: var(--ink); }
+  .site-footer-band { border-top: 1px solid var(--line); }
+  .site-footer { padding-block: 64px 48px; font-size: 12px; color: var(--muted); display: grid; gap: 28px; }
+  .foot-links { display: flex; flex-wrap: wrap; gap: 12px 28px; font-size: 13px; color: var(--paper); }
   .foot-links a, .socials a { text-decoration: none; }
   .foot-links a:hover, .socials a:hover, .foot-meta a:hover { color: var(--sig-text); }
   .foot-meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; border-top: 1px solid var(--line); padding-top: 24px; }

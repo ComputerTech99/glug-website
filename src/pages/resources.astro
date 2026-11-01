@@ -3,11 +3,14 @@ import Base from '../layouts/Base.astro';
 import SectionHead from '../components/SectionHead.astro';
 import { resources } from '../lib/data';
 ---
-<Base title="Resources" description="Curated free resources for learning Linux, Git and contributing to open source.">
-  <main id="main" class="wrap">
-    <section class="page-top">
+<Base title="Resources" description="Curated free resources for learning Linux, Git and contributing to open source." dark>
+  <main id="main">
+    <section class="page-top on-ink grid-bg">
+      <div class="wrap">
       <SectionHead level="h1" num="//" label="Resources" title="Learn in the open" intro="Free, hand-picked material we actually recommend. Start at the top of a topic and work down." />
+      </div>
     </section>
+    <div class="wrap">
     {resources.map((t, i) => (
       <section class="page-block topic">
         <p class="lbl"><i>0{i + 1}</i> Topic</p>
@@ -23,6 +26,7 @@ import { resources } from '../lib/data';
         </ul>
       </section>
     ))}
+    </div>
   </main>
 </Base>
 

@@ -17,8 +17,20 @@ a { color: inherit; }
 
 .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
 .mono { font-family: var(--font-mono); }
-/* On dark sections the bright orange already has 5.9:1 contrast */
-.on-ink { --sig-display: var(--sig); --sig-text: var(--sig); }
+/* Dark sections: ink background, cream text. Bright orange already has 5.9:1 contrast on ink. */
+.on-ink {
+  background-color: var(--ink);
+  color: var(--paper);
+  --muted: rgb(244 241 234 / 0.62);
+  --line: rgb(244 241 234 / 0.14);
+  --sig-display: var(--sig);
+  --sig-text: var(--sig);
+}
+.on-ink.grid-bg, .on-ink .grid-bg {
+  background-image:
+    linear-gradient(rgb(244 241 234 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(244 241 234 / 0.05) 1px, transparent 1px);
+}
 .grid-bg {
   background-image:
     linear-gradient(rgb(20 20 20 / 0.06) 1px, transparent 1px),

@@ -3,9 +3,12 @@ import Logo from './Logo.astro';
 import { NAV_LINKS, JOIN_LINK } from '../lib/nav';
 import { SITE } from '../data/site';
 
+interface Props { dark?: boolean }
+const { dark = false } = Astro.props;
 const path = Astro.url.pathname;
 const current = (href: string) => (path.startsWith(href) ? 'page' : undefined);
 ---
+<div class:list={['site-nav-band', { 'on-ink': dark }]}>
 <header class="site-nav wrap">
   <a class="brand mono" href="/" aria-label={`${SITE.name} home`}>
     <span class="mark"><Logo variant="mark" title="" /></span>
@@ -17,7 +20,7 @@ const current = (href: string) => (path.startsWith(href) ? 'page' : undefined);
   </nav>
   <button class="menu-btn mono" type="button" aria-expanded="false" aria-controls="mobile-menu">Menu</button>
 
-  <div id="mobile-menu" class="overlay grid-bg" hidden>
+  <div id="mobile-menu" class="overlay on-ink grid-bg" hidden>
     <div class="overlay-top wrap">
       <span class="mono"><b>{SITE.shortName}</b></span>
       <button class="close-btn mono" type="button">Close ✕</button>
@@ -28,6 +31,7 @@ const current = (href: string) => (path.startsWith(href) ? 'page' : undefined);
     </nav>
   </div>
 </header>
+</div>
 
 <script>
   const btn = document.querySelector<HTMLButtonElement>('.menu-btn')!;
@@ -64,6 +68,7 @@ const current = (href: string) => (path.startsWith(href) ? 'page' : undefined);
   .site-nav { display: flex; justify-content: space-between; align-items: center; padding-block: 24px; font-size: 13px; }
   .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; letter-spacing: 0.04em; }
   .mark { width: 34px; display: block; }
+  .on-ink .mark { background: var(--white); color: var(--ink); border: 2px solid var(--paper); width: 38px; padding: 2px; }
   .nav-links { display: flex; gap: 36px; }
   .nav-links a { text-decoration: none; position: relative; }
   .nav-links a:hover, .nav-links a[aria-current='page'] { color: var(--sig-text); }
@@ -72,15 +77,15 @@ const current = (href: string) => (path.startsWith(href) ? 'page' : undefined);
   .menu-btn, .close-btn {
     display: none;
     background: none;
-    border: 2px solid var(--ink);
-    box-shadow: 3px 3px 0 var(--ink);
+    border: 2px solid currentColor;
+    box-shadow: 3px 3px 0 currentColor;
     padding: 8px 14px;
     font-size: 13px;
-    color: var(--ink);
+    color: inherit;
     cursor: pointer;
   }
   .close-btn { display: inline-block; }
-  .overlay { position: fixed; inset: 0; z-index: 50; background-color: var(--paper); display: flex; flex-direction: column; }
+  .overlay { position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column; }
   .overlay[hidden] { display: none; }
   .overlay-top { display: flex; justify-content: space-between; align-items: center; padding-block: 24px; font-size: 13px; }
   .overlay-links { display: flex; flex-direction: column; gap: 12px; margin-top: auto; padding-bottom: 12vh; }

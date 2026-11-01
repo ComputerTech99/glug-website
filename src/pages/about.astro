@@ -5,13 +5,16 @@ import Button from '../components/Button.astro';
 import { timeline } from '../lib/data';
 import { SITE } from '../data/site';
 ---
-<Base title="About" description="What GLUG FET-JU is, why free software matters, and how we got here.">
-  <main id="main" class="wrap">
-    <section class="page-top">
+<Base title="About" description="What GLUG FET-JU is, why free software matters, and how we got here." dark>
+  <main id="main">
+    <section class="page-top on-ink grid-bg">
+      <div class="wrap">
       <SectionHead level="h1" num="//" label="About" intro="The GNU/Linux Users Group at the Faculty of Engineering & Technology, Jain University.">
         <Fragment slot="title">Software freedom, <em>in practice.</em></Fragment>
       </SectionHead>
+      </div>
     </section>
+    <div class="wrap">
 
     <section class="page-block manifesto">
       <!-- TODO-REAL: replace with the club's own words -->
@@ -39,6 +42,7 @@ import { SITE } from '../data/site';
         <Button href={SITE.fsmkUrl} external>Visit fsmk.org ↗</Button>
       </div>
     </section>
+    </div>
   </main>
 </Base>
 

@@ -53,7 +53,8 @@ const WHAT = [
       )}
     </section>
 
-    <section class="section wrap flush-top">
+    <section id="what" class="band on-ink grid-bg">
+      <div class="wrap">
       <SectionHead num="02" label="What we do" intro="We learn in the open, teach what we learn, and give back to the projects we use every day.">
         <Fragment slot="title">Not a club.<br />A commit history.</Fragment>
       </SectionHead>
@@ -66,16 +67,14 @@ const WHAT = [
           </li>
         ))}
       </ol>
-    </section>
-
-    <div class="wrap">
       <Stats items={[
         { value: SITE.stats.members, suffix: '+', label: 'Members' },
         { value: SITE.stats.events, suffix: '+', label: 'Events' },
         { value: SITE.stats.years, label: 'Years' },
         { value: '∞', label: 'Distro debates' },
       ]} />
-    </div>
+      </div>
+    </section>
 
     {archive.length > 0 && (
       <section id="archive" class="section wrap">
@@ -87,7 +86,7 @@ const WHAT = [
       </section>
     )}
 
-    <section id="join-cta" class="cta grid-bg on-ink">
+    <section id="join-cta" class="cta on-ink grid-bg">
       <div class="wrap">
         <p class="lbl"><i>04</i> Join</p>
         <h2 class="h-display">Your first commit<br />starts <em>here.</em></h2>
@@ -122,7 +121,8 @@ const WHAT = [
   }
 
   .section { padding-block: var(--section-pad); }
-  .flush-top { padding-top: 0; }
+  .band { padding-block: var(--section-pad); }
+  .band :global(.stats) { margin-top: clamp(72px, 10vh, 120px); }
   .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
   .cards--4 { grid-template-columns: repeat(4, 1fr); gap: 28px; }
   .empty { font-size: 15px; border: 2px dashed var(--line); padding: 32px; }
@@ -135,9 +135,7 @@ const WHAT = [
   .what h3 { font-size: 28px; letter-spacing: -0.03em; margin: 72px 0 14px; }
   .what p { font-size: 15px; line-height: 1.6; color: var(--muted); margin: 0; max-width: 260px; }
 
-  .cta { background-color: var(--ink); color: var(--paper); padding-block: clamp(120px, 22vh, 240px);
-    background-image: linear-gradient(rgb(244 241 234 / 0.06) 1px, transparent 1px), linear-gradient(90deg, rgb(244 241 234 / 0.06) 1px, transparent 1px); }
-  .cta .lbl { color: rgb(244 241 234 / 0.6); }
+  .cta { padding-block: clamp(120px, 22vh, 240px); }
   .cta h2 { font-size: clamp(52px, 10vw, 168px); margin: 24px 0 64px; }
 
   @media (max-width: 1100px) { .cards--4 { grid-template-columns: repeat(2, 1fr); } }

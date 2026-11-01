@@ -11,11 +11,14 @@ const current = all.filter((m) => !m.data.alumni);
 const alumni = all.filter((m) => m.data.alumni).sort(sort);
 const years = [...new Set(current.map((m) => m.data.year))].sort((a, b) => b - a);
 ---
-<Base title="Team" description="The students who run GLUG FET-JU.">
-  <main id="main" class="wrap">
-    <section class="page-top">
+<Base title="Team" description="The students who run GLUG FET-JU." dark>
+  <main id="main">
+    <section class="page-top on-ink grid-bg">
+      <div class="wrap">
       <SectionHead level="h1" num="//" label="Team" title="The people" intro="Students who run workshops, mentor first-time contributors and keep the chai flowing." />
+      </div>
     </section>
+    <div class="wrap">
 
     <section id="current" class="page-block" aria-label="Current team">
       {years.map((y) => (
@@ -32,6 +35,7 @@ const years = [...new Set(current.map((m) => m.data.year))].sort((a, b) => b - a
         <div class="grid">{alumni.map((m) => <TeamCard member={m} />)}</div>
       </section>
     )}
+    </div>
   </main>
 </Base>
 

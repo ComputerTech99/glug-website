@@ -21,8 +21,10 @@ const TYPE_LABEL: Record<string, string> = {
 };
 const when = endDate ? `${formatEventDate(date)} – ${formatEventDate(endDate)}` : formatEventDate(date);
 ---
-<Base title={title} description={summary} ogImage={poster?.src}>
-  <main id="main" class="wrap">
+<Base title={title} description={summary} ogImage={poster?.src} dark>
+  <main id="main">
+    <section class="page-top on-ink grid-bg">
+    <div class="wrap">
     <p class="back mono"><a href="/events/">← All events</a></p>
     <header class="head">
       <p class="lbl"><i>//</i> {TYPE_LABEL[type]}</p>
@@ -32,9 +34,12 @@ const when = endDate ? `${formatEventDate(date)} – ${formatEventDate(endDate)}
         <div><dt>Venue</dt><dd>{venue}</dd></div>
         <div><dt>Type</dt><dd>{TYPE_LABEL[type]}</dd></div>
       </dl>
-      {upcoming && registerUrl && <Button href={registerUrl} external>Register →</Button>}
+      {upcoming && registerUrl && <Button href={registerUrl} external class="on-dark">Register →</Button>}
       {!upcoming && <p class="happened mono">It happened ✦</p>}
     </header>
+    </div>
+    </section>
+    <div class="wrap">
 
     <div class="layout">
       <div class="poster-wrap">
@@ -55,19 +60,20 @@ const when = endDate ? `${formatEventDate(date)} – ${formatEventDate(endDate)}
         </div>
       </section>
     )}
+    </div>
   </main>
 </Base>
 
 <style>
-  .back { padding-top: 32px; font-size: 13px; margin: 0; }
+  .back { font-size: 13px; margin: 0; }
   .back a { text-decoration: none; }
   .back a:hover { color: var(--sig-text); }
-  .head { padding-block: clamp(48px, 9vh, 110px) clamp(48px, 7vw, 80px); }
+  .head { padding-top: clamp(40px, 7vh, 88px); }
   h1 { font-size: clamp(26px, 7.4vw, 120px); margin: 20px 0 40px; max-width: 16ch; }
   .meta { display: flex; flex-wrap: wrap; gap: 16px 56px; margin: 0 0 40px; font-size: 14px; }
   .meta dt { color: var(--muted); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
   .meta dd { margin: 4px 0 0; }
-  .happened { display: inline-block; background: var(--ink); color: var(--paper); padding: 10px 16px; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; margin: 0; }
+  .happened { display: inline-block; background: var(--paper); color: var(--ink); padding: 10px 16px; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; margin: 0; }
   .layout { display: grid; grid-template-columns: minmax(0, 520px) minmax(0, 1fr); gap: clamp(32px, 6vw, 96px); align-items: start; padding-bottom: var(--section-pad); }
   .poster { width: 100%; height: auto; border: 2px solid var(--ink); box-shadow: var(--shadow-lg); background: var(--white); }
   .poster-fallback { aspect-ratio: 4 / 3; display: flex; align-items: flex-end; padding: 24px; background-color: var(--paper); }

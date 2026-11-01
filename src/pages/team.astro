@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import TeamCard from '../components/TeamCard.astro';
+
+const all = await getCollection('team');
+const sort = (a: (typeof all)[number], b: (typeof all)[number]) =>
+  (a.data.order ?? 999) - (b.data.order ?? 999) || a.data.name.localeCompare(b.data.name);
+const current = all.filter((m) => !m.data.alumni);
+const alumni = all.filter((m) => m.data.alumni).sort(sort);
+const years = [...new Set(current.map((m) => m.data.year))].sort((a, b) => b - a);
+---
+<Base title="Team" description="The students who run GLUG FET-JU.">
+  <main id="main" class="wrap">
+    <section class="page-top">
+      <SectionHead level="h1" num="//" label="Team" title="The people" intro="Students who run workshops, mentor first-time contributors and keep the chai flowing." />
+    </section>
+
+    <section id="current" class="page-block" aria-label="Current team">
+      {years.map((y) => (
+        <div class="year-group">
+          <h2 class="lbl"><i>{y}</i> Core team</h2>
+          <div class="grid">{current.filter((m) => m.data.year === y).sort(sort).map((m) => <TeamCard member={m} />)}</div>
+        </div>
+      ))}
+    </section>
+
+    {alumni.length > 0 && (
+      <section id="alumni" class="page-block" aria-labelledby="alumni-h">
+        <h2 id="alumni-h" class="lbl"><i>✦</i> Alumni</h2>
+        <div class="grid">{alumni.map((m) => <TeamCard member={m} />)}</div>
+      </section>
+    )}
+  </main>
+</Base>
+
+<style>
+  .year-group + .year-group { margin-top: 72px; }
+  .lbl { margin: 0 0 32px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px 40px; }
+  @media (max-width: 1000px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 700px) { .grid { grid-template-columns: 1fr 1fr; gap: 36px 20px; } }
+</style>

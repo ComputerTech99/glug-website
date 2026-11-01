@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Page not found" description="This page doesn't exist.">
+  <main id="main" class="wrap nf">
+    <p class="lbl"><i>//</i> Error 404</p>
+    <h1 class="mono"><span class="prompt">$</span> page<br />bash: page: command not found</h1>
+    <p class="mono help">Try one of these instead:</p>
+    <p class="mono links"><a href="/">cd ~</a><a href="/events/">ls events/</a><a href="/join/">./join.sh</a></p>
+  </main>
+</Base>
+
+<style>
+  .nf { padding-block: clamp(96px, 20vh, 220px); }
+  h1 { font-size: clamp(24px, 4.2vw, 60px); font-weight: 600; line-height: 1.25; margin: 28px 0 48px; overflow-wrap: anywhere; }
+  .prompt { color: var(--sig); }
+  .help { color: var(--muted); font-size: 13px; }
+  .links { display: flex; flex-wrap: wrap; gap: 28px; font-size: 16px; }
+  .links a { text-decoration-color: var(--sig); text-underline-offset: 4px; }
+  .links a:hover { color: var(--sig); }
+</style>

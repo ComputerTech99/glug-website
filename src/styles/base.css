@@ -40,8 +40,8 @@ a { color: inherit; }
   word-spacing: 0.08em;
   line-height: 0.86;
   margin: 0;
-  overflow-wrap: anywhere;
-  hyphens: auto;
+  overflow-wrap: break-word;
+  hyphens: manual;
 }
 .h-display em { font-style: normal; color: var(--sig); }
 .sr-only {

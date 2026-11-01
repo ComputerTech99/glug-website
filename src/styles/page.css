@@ -1,0 +1,4 @@
+/* Shared layout for simple inner pages */
+.page-top { padding-block: clamp(64px, 12vh, 140px) 0; }
+.page-block { padding-bottom: var(--section-pad); }
+.page-block > .lbl { margin: 0 0 32px; }

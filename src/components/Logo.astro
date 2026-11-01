@@ -13,8 +13,9 @@ const viewBox = variant === 'mark' ? MARK_VIEWBOX : LOGO_VIEWBOX;
 <svg
   class:list={['logo', `logo--${variant}`, { 'logo--animate': animate }, cls]}
   viewBox={viewBox}
-  role="img"
-  aria-label={title}
+  role={title ? 'img' : undefined}
+  aria-label={title || undefined}
+  aria-hidden={title ? undefined : 'true'}
   xmlns="http://www.w3.org/2000/svg"
 >
   <path class="sil" d={LOGO_SILHOUETTE} fill-rule="evenodd" />

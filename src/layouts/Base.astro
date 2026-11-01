@@ -1,6 +1,8 @@
 ---
 import '../styles/tokens.css';
 import '../styles/base.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title: string;
@@ -21,6 +23,14 @@ const fullTitle = title.includes('GLUG') ? title : `${title} — GLUG FET-JU`;
     <meta name="description" content={description} />
   </head>
   <body>
+    <a class="skip mono" href="#main">Skip to content</a>
+    <Nav />
     <slot />
+    <Footer />
   </body>
 </html>
+
+<style>
+  .skip { position: absolute; left: 16px; top: -60px; background: var(--ink); color: var(--paper); padding: 10px 14px; z-index: 100; }
+  .skip:focus { top: 16px; }
+</style>

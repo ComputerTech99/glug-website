@@ -1,0 +1,93 @@
+---
+import Logo from './Logo.astro';
+import { NAV_LINKS, JOIN_LINK } from '../lib/nav';
+import { SITE } from '../data/site';
+
+const path = Astro.url.pathname;
+const current = (href: string) => (path.startsWith(href) ? 'page' : undefined);
+---
+<header class="site-nav wrap">
+  <a class="brand mono" href="/" aria-label={`${SITE.name} home`}>
+    <span class="mark"><Logo variant="mark" title="" /></span>
+    <b>{SITE.shortName}</b>
+  </a>
+  <nav class="nav-links mono" aria-label="Main">
+    {NAV_LINKS.map((l) => <a href={l.href} aria-current={current(l.href)}>{l.label}</a>)}
+    <a class="join" href={JOIN_LINK.href} aria-current={current(JOIN_LINK.href)}>{JOIN_LINK.label} →</a>
+  </nav>
+  <button class="menu-btn mono" type="button" aria-expanded="false" aria-controls="mobile-menu">Menu</button>
+
+  <div id="mobile-menu" class="overlay grid-bg" hidden>
+    <div class="overlay-top wrap">
+      <span class="mono"><b>{SITE.shortName}</b></span>
+      <button class="close-btn mono" type="button">Close ✕</button>
+    </div>
+    <nav class="overlay-links wrap" aria-label="Mobile">
+      {NAV_LINKS.map((l) => <a class="h-display" href={l.href} aria-current={current(l.href)}>{l.label}</a>)}
+      <a class="h-display join" href={JOIN_LINK.href}>{JOIN_LINK.label} →</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.menu-btn')!;
+  const overlay = document.getElementById('mobile-menu')!;
+  const closeBtn = overlay.querySelector<HTMLButtonElement>('.close-btn')!;
+  const focusables = () => [...overlay.querySelectorAll<HTMLElement>('a, button')];
+
+  const open = () => {
+    overlay.hidden = false;
+    btn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  };
+  const close = () => {
+    overlay.hidden = true;
+    btn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    btn.focus();
+  };
+
+  btn.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+  overlay.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') return close();
+    if (e.key !== 'Tab') return;
+    const f = focusables();
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+</script>
+
+<style>
+  .site-nav { display: flex; justify-content: space-between; align-items: center; padding-block: 24px; font-size: 13px; }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; letter-spacing: 0.04em; }
+  .mark { width: 34px; display: block; }
+  .nav-links { display: flex; gap: 36px; }
+  .nav-links a { text-decoration: none; position: relative; }
+  .nav-links a:hover, .nav-links a[aria-current='page'] { color: var(--sig); }
+  .nav-links a[aria-current='page']::after { content: ''; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; background: var(--sig); }
+  .nav-links .join { color: var(--sig); font-weight: 600; }
+  .menu-btn, .close-btn {
+    display: none;
+    background: none;
+    border: 2px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+    padding: 8px 14px;
+    font-size: 13px;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .close-btn { display: inline-block; }
+  .overlay { position: fixed; inset: 0; z-index: 50; background-color: var(--paper); display: flex; flex-direction: column; }
+  .overlay[hidden] { display: none; }
+  .overlay-top { display: flex; justify-content: space-between; align-items: center; padding-block: 24px; font-size: 13px; }
+  .overlay-links { display: flex; flex-direction: column; gap: 12px; margin-top: auto; padding-bottom: 12vh; }
+  .overlay-links a { font-size: clamp(44px, 13vw, 72px); text-decoration: none; }
+  .overlay-links a[aria-current='page'], .overlay-links .join { color: var(--sig); }
+  @media (max-width: 760px) {
+    .nav-links { display: none; }
+    .menu-btn { display: inline-block; }
+  }
+</style>

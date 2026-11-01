@@ -1,0 +1,27 @@
+---
+import { NAV_LINKS, JOIN_LINK } from '../lib/nav';
+import { SITE } from '../data/site';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer wrap mono">
+  <nav aria-label="Footer" class="foot-links">
+    {[...NAV_LINKS, JOIN_LINK].map((l) => <a href={l.href}>{l.label}</a>)}
+  </nav>
+  <div class="foot-meta">
+    <span>© {year} {SITE.name} · This site is free software (GPL-3.0) · <a href={SITE.sourceUrl}>Source on GitHub</a></span>
+    <span class="socials">
+      <a href={SITE.socials.linkedin} rel="noopener" target="_blank">LinkedIn</a>
+      <a href={SITE.socials.github} rel="noopener" target="_blank">GitHub</a>
+      <a href={SITE.socials.instagram} rel="noopener" target="_blank">Instagram</a>
+    </span>
+  </div>
+</footer>
+
+<style>
+  .site-footer { padding-block: 48px 40px; font-size: 12px; color: var(--muted); display: grid; gap: 28px; }
+  .foot-links { display: flex; flex-wrap: wrap; gap: 12px 28px; font-size: 13px; color: var(--ink); }
+  .foot-links a, .socials a { text-decoration: none; }
+  .foot-links a:hover, .socials a:hover, .foot-meta a:hover { color: var(--sig); }
+  .foot-meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; border-top: 1px solid var(--line); padding-top: 24px; }
+  .socials { display: flex; gap: 20px; }
+</style>

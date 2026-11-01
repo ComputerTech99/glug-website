@@ -1,0 +1,11 @@
+---
+# TODO-REAL: placeholder member
+name: Tech Lead Name
+role: Tech Lead
+year: 2026
+photo: ./images/tech-lead.png
+github: https://github.com/REPLACE-ME
+linkedin: https://www.linkedin.com/in/REPLACE-ME
+alumni: false
+order: 2
+---

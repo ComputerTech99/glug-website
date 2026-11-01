@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import Logo from '../components/Logo.astro';
 ---
 <Base title="GLUG FET-JU — GNU/Linux Users Group, Jain University" description="GLUG FET-JU is the GNU/Linux Users Group at the Faculty of Engineering & Technology, Jain University. Workshops, install fests and open source contributions.">
   <main>
@@ -11,6 +12,9 @@ import Base from '../layouts/Base.astro';
           <span class="line">as in</span>
           <span class="line"><em>freedom.</em></span>
         </h1>
+      </div>
+      <div class="tux-card">
+        <Logo variant="full" animate />
       </div>
     </section>
   </main>
@@ -30,5 +34,16 @@ import Base from '../layouts/Base.astro';
   .line:nth-child(2) { animation-delay: 80ms; }
   .line:nth-child(3) { animation-delay: 160ms; }
   @keyframes rise { from { opacity: 0; transform: translateY(0.4em); } }
-  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; min-height: auto; } }
+  .tux-card {
+    width: 260px;
+    background: var(--white);
+    border: 2px solid var(--ink);
+    box-shadow: var(--shadow-lg);
+    padding: 24px;
+    color: var(--ink);
+  }
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .tux-card { width: 180px; padding: 16px; }
+  }
 </style>

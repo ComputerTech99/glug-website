@@ -36,7 +36,8 @@ a { color: inherit; }
 .h-display {
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: -0.06em;
+  letter-spacing: -0.045em;
+  word-spacing: 0.08em;
   line-height: 0.86;
   margin: 0;
   overflow-wrap: anywhere;

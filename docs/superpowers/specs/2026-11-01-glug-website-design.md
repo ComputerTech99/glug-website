@@ -42,12 +42,14 @@ Direction chosen: **"C's poster energy, A's colours, ink-led"** with generous wh
 --ink:   #141414   text, borders, shadows
 --muted: #141414 @ 60%   secondary text
 --line:  #141414 @ 12%   hairline dividers
---sig:   #FF5A1F   the single accent ("signal orange")
+--sig:   #FF5A1F   the single accent ("signal orange"): fills, buttons, markers, text on --ink
+--sig-display: #E8490F   large orange text on paper/white (3.45:1)
+--sig-text:    #C73A0A   small orange text on paper/white (4.61:1)
 --white: #FFFFFF   card surfaces
 ```
 Orange is a spark, never a fill for large areas: key headline word, primary button, section numbers, ✦ markers, tags. Large dark block allowed only for the Join CTA section.
 
-Note on contrast: `--sig` on `--paper` is used for large/bold text and decoration only; small body text is always `--ink`/`--muted`. Primary button = ink text on orange (passes AA).
+Note on contrast: `--sig` on `--paper` is only 2.76:1, so orange *text* on light backgrounds uses `--sig-display` (large) or `--sig-text` (small); dark sections (`.on-ink`) use `--sig` directly (5.91:1). Primary button = ink text on `--sig` (passes AA).
 
 **Type**
 - Display/body: **Inter Tight** (400/500/700/900). Headlines: weight 900, UPPERCASE, letter-spacing ≈ −0.06em, line-height ≈ 0.86, fluid `clamp()` sizes (hero up to ~220px, section titles up to ~112px).

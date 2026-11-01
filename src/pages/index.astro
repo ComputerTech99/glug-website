@@ -87,7 +87,7 @@ const WHAT = [
       </section>
     )}
 
-    <section id="join-cta" class="cta grid-bg">
+    <section id="join-cta" class="cta grid-bg on-ink">
       <div class="wrap">
         <p class="lbl"><i>04</i> Join</p>
         <h2 class="h-display">Your first commit<br />starts <em>here.</em></h2>
@@ -131,7 +131,7 @@ const WHAT = [
 
   .what { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); }
   .what li { padding: 40px 32px 0 0; }
-  .what .n { color: var(--sig); font-size: 12px; }
+  .what .n { color: var(--sig-text); font-size: 12px; }
   .what h3 { font-size: 28px; letter-spacing: -0.03em; margin: 72px 0 14px; }
   .what p { font-size: 15px; line-height: 1.6; color: var(--muted); margin: 0; max-width: 260px; }
 
@@ -148,8 +148,9 @@ const WHAT = [
       scroll-snap-type: x mandatory; padding: 4px 12px 20px 4px; margin-inline: -4px; }
     .cards > :global(*) { scroll-snap-align: start; }
     .cards--4 { grid-auto-flow: row; grid-template-columns: 1fr 1fr; overflow: visible; }
-    .what { grid-template-columns: 1fr 1fr; row-gap: 24px; }
-    .what h3 { margin-top: 40px; }
+    .what { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 24px; }
+    .what li { padding-right: 16px; }
+    .what h3 { margin-top: 40px; font-size: clamp(20px, 6vw, 28px); }
   }
   @media (max-width: 560px) { .cards--4 { grid-template-columns: 1fr; } }
 </style>

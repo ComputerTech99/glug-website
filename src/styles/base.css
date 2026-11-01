@@ -17,6 +17,8 @@ a { color: inherit; }
 
 .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
 .mono { font-family: var(--font-mono); }
+/* On dark sections the bright orange already has 5.9:1 contrast */
+.on-ink { --sig-display: var(--sig); --sig-text: var(--sig); }
 .grid-bg {
   background-image:
     linear-gradient(rgb(20 20 20 / 0.06) 1px, transparent 1px),
@@ -32,7 +34,7 @@ a { color: inherit; }
   display: flex;
   gap: 12px;
 }
-.lbl i { font-style: normal; color: var(--sig); }
+.lbl i { font-style: normal; color: var(--sig-text); }
 .h-display {
   font-weight: 900;
   text-transform: uppercase;
@@ -43,7 +45,7 @@ a { color: inherit; }
   overflow-wrap: break-word;
   hyphens: manual;
 }
-.h-display em { font-style: normal; color: var(--sig); }
+.h-display em { font-style: normal; color: var(--sig-display); }
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;

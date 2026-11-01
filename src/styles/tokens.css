@@ -10,7 +10,9 @@
   --ink: #141414;
   --muted: rgb(20 20 20 / 0.6);
   --line: rgb(20 20 20 / 0.12);
-  --sig: #FF5A1F;
+  --sig: #FF5A1F;          /* fills, buttons, markers, text on --ink */
+  --sig-display: #E8490F;  /* large orange text on paper/white (≥3:1) */
+  --sig-text: #C73A0A;     /* small orange text on paper/white (≥4.5:1) */
   --white: #FFFFFF;
 
   --font-sans: 'Inter Tight', system-ui, sans-serif;

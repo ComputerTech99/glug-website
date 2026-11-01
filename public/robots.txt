@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://glug-fet-ju.pages.dev/sitemap-index.xml

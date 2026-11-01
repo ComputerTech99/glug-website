@@ -34,7 +34,7 @@ test.describe('without JavaScript', () => {
 });
 
 test('no upcoming events shows the empty state', async ({ page }) => {
-  await page.goto('http://localhost:4322/');
+  await page.goto('http://localhost:4522/');
   await expect(page.locator('#upcoming')).toContainText('Nothing scheduled right now');
   await expect(page.locator('#upcoming').getByRole('link', { name: /linkedin/i })).toBeVisible();
   await expect(page.locator('#upcoming .event-card')).toHaveCount(0);

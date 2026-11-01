@@ -135,7 +135,7 @@ const WHAT = [
   .what h3 { font-size: 28px; letter-spacing: -0.03em; margin: 72px 0 14px; }
   .what p { font-size: 15px; line-height: 1.6; color: var(--muted); margin: 0; max-width: 260px; }
 
-  .cta { background-color: var(--ink); color: var(--paper); padding-block: clamp(120px, 22vh, 240px); margin-top: var(--section-pad);
+  .cta { background-color: var(--ink); color: var(--paper); padding-block: clamp(120px, 22vh, 240px);
     background-image: linear-gradient(rgb(244 241 234 / 0.06) 1px, transparent 1px), linear-gradient(90deg, rgb(244 241 234 / 0.06) 1px, transparent 1px); }
   .cta .lbl { color: rgb(244 241 234 / 0.6); }
   .cta h2 { font-size: clamp(52px, 10vw, 168px); margin: 24px 0 64px; }
@@ -152,5 +152,5 @@ const WHAT = [
     .what li { padding-right: 16px; }
     .what h3 { margin-top: 40px; font-size: clamp(20px, 6vw, 28px); }
   }
-  @media (max-width: 560px) { .cards--4 { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .cards--4 { grid-template-columns: 1fr; } .cta { padding-block: 96px; } #archive { padding-bottom: 96px; } }
 </style>

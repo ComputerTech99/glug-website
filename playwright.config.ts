@@ -13,7 +13,7 @@ export default defineConfig({
   testDir: 'tests/e2e',
   fullyParallel: true,
   reporter: 'line',
-  use: { baseURL: 'http://localhost:4321' },
+  use: { baseURL: 'http://localhost:4521' },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
-  webServer: [server('2026-11-01T06:00:00Z', './dist', 4321), server('2030-01-01T06:00:00Z', './.dist-future', 4322)],
+  webServer: [server('2026-11-01T06:00:00Z', './dist', 4521), server('2030-01-01T06:00:00Z', './.dist-future', 4522)],
 });

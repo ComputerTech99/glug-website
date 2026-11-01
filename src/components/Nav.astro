@@ -87,6 +87,8 @@ const current = (href: string) => (path.startsWith(href) ? 'page' : undefined);
   .close-btn { display: inline-block; }
   .overlay { position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column; }
   .overlay[hidden] { display: none; }
+  /* .wrap uses margin-inline:auto, which shrink-wraps flex items in a column; force full width */
+  .overlay > .wrap { width: 100%; }
   .overlay-top { display: flex; justify-content: space-between; align-items: center; padding-block: 24px; font-size: 13px; }
   .overlay-links { display: flex; flex-direction: column; gap: 12px; margin-top: auto; padding-bottom: 12vh; }
   .overlay-links a { font-size: clamp(44px, 13vw, 72px); text-decoration: none; }

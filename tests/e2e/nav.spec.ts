@@ -24,6 +24,22 @@ test.describe('mobile nav', () => {
   });
 });
 
+test.describe('mobile menu layout', () => {
+  test.use({ viewport: { width: 412, height: 924 } });
+
+  test('overlay header spans the full width: brand left, Close right', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: /menu/i }).click();
+    const overlay = page.locator('#mobile-menu');
+    const brand = await overlay.locator('.overlay-top > span').boundingBox();
+    const close = await overlay.getByRole('button', { name: /close/i }).boundingBox();
+    expect(brand!.x).toBeLessThan(40);
+    expect(close!.x + close!.width).toBeGreaterThan(412 - 40);
+    const link = await overlay.getByRole('link', { name: 'Events' }).boundingBox();
+    expect(link!.x).toBeLessThan(40);
+  });
+});
+
 test.describe('desktop nav', () => {
   test.use({ viewport: { width: 1440, height: 900 } });
 

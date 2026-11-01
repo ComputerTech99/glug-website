@@ -1,0 +1,28 @@
+@import '@fontsource/inter-tight/latin-400.css';
+@import '@fontsource/inter-tight/latin-500.css';
+@import '@fontsource/inter-tight/latin-700.css';
+@import '@fontsource/inter-tight/latin-900.css';
+@import '@fontsource/jetbrains-mono/latin-400.css';
+@import '@fontsource/jetbrains-mono/latin-600.css';
+
+:root {
+  --paper: #F4F1EA;
+  --ink: #141414;
+  --muted: rgb(20 20 20 / 0.6);
+  --line: rgb(20 20 20 / 0.12);
+  --sig: #FF5A1F;          /* fills, buttons, markers, text on --ink */
+  --sig-display: #E8490F;  /* large orange text on paper/white (≥3:1) */
+  --sig-text: #C73A0A;     /* small orange text on paper/white (≥4.5:1) */
+  --white: #FFFFFF;
+
+  --font-sans: 'Inter Tight', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --gutter: clamp(20px, 6vw, 96px);
+  --max: 1360px;
+  --section-pad: clamp(96px, 16vh, 180px);
+
+  --shadow-sm: 5px 5px 0 var(--ink);
+  --shadow-md: 6px 6px 0 var(--ink);
+  --shadow-lg: 8px 8px 0 var(--ink);
+}

@@ -1,0 +1,40 @@
+---
+interface Props {
+  href: string;
+  variant?: 'primary' | 'ghost';
+  external?: boolean;
+  class?: string;
+}
+const { href, variant = 'primary', external = false, class: cls } = Astro.props;
+---
+<a
+  href={href}
+  class:list={['btn', `btn--${variant}`, cls]}
+  {...(external ? { target: '_blank', rel: 'noopener' } : {})}
+><slot /></a>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn--primary {
+    background: var(--sig);
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    box-shadow: var(--shadow-sm);
+    padding: 16px 24px;
+  }
+  .btn--primary:hover { transform: translate(-3px, -3px); box-shadow: 8px 8px 0 var(--ink); }
+  .btn--primary:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+  .btn--primary.on-dark { border-color: var(--paper); box-shadow: 5px 5px 0 var(--paper); }
+  .btn--primary.on-dark:hover { box-shadow: 8px 8px 0 var(--paper); }
+  .btn--ghost { text-decoration: underline; text-underline-offset: 4px; padding: 16px 0; color: inherit; }
+  .btn--ghost:hover { color: var(--sig-text); }
+</style>

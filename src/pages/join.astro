@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Button from '../components/Button.astro';
+import { SITE } from '../data/site';
+
+const WHY = [
+  { t: 'Learn by doing', d: 'Hands-on workshops where your laptop is open and the terminal is on.' },
+  { t: 'Ship real code', d: 'Mentored contributions to real open-source projects — the kind that go on a résumé.' },
+  { t: 'Find your people', d: 'Hack nights, talks and a community that cares about software freedom.' },
+];
+const GET = ['Early access to workshops and install fests', 'Mentors for your first pull requests', 'A seat at FSMK camps and community events', 'Stickers. Obviously.'];
+---
+<Base title="Join" description="Join GLUG FET-JU — open to every student at FET, Jain University. No Linux experience needed." dark>
+  <main id="main">
+    <section class="page-top on-ink grid-bg">
+      <div class="wrap">
+      <SectionHead level="h1" num="//" label="Join" intro="Open to every student at FET. No Linux experience needed — just curiosity.">
+        <Fragment slot="title">Your first commit <em>starts here.</em></Fragment>
+      </SectionHead>
+      </div>
+    </section>
+
+    <section class="wrap page-block" aria-labelledby="why-h">
+      <h2 id="why-h" class="lbl"><i>01</i> Why join</h2>
+      <ol class="why">
+        {WHY.map((w, i) => <li><span class="n mono">[0{i + 1}]</span><h3>{w.t}</h3><p>{w.d}</p></li>)}
+      </ol>
+    </section>
+
+    <section class="wrap page-block" aria-labelledby="get-h">
+      <h2 id="get-h" class="lbl"><i>02</i> What you get</h2>
+      <ul class="get">{GET.map((g) => <li>{g}</li>)}</ul>
+    </section>
+
+    <section class="cta on-ink grid-bg" aria-labelledby="how-h">
+      <div class="wrap">
+        <h2 id="how-h" class="lbl"><i>03</i> How to join</h2>
+        <p class="how">Fill the form, then hop into the chat — that's it.</p>
+        <div class="actions">
+          <Button href={SITE.joinFormUrl} external class="on-dark">Fill the form ↗</Button>
+          <Button href={SITE.chatUrl} external class="on-dark">Join the chat ↗</Button>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .why { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
+  .why li { padding: 40px 32px 0 0; }
+  .why .n { color: var(--sig-text); font-size: 12px; }
+  .why h3 { font-size: 28px; letter-spacing: -0.03em; margin: 56px 0 14px; }
+  .why p { font-size: 16px; line-height: 1.6; color: var(--muted); margin: 0; max-width: 320px; }
+  .get { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .get li { font-size: clamp(22px, 2.6vw, 36px); font-weight: 700; letter-spacing: -0.03em; padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .get li::before { content: '✦'; color: var(--sig); margin-right: 20px; font-weight: 400; }
+  .cta { padding-block: clamp(96px, 18vh, 200px); }
+  .cta .lbl { margin: 0; }
+  .how { font-size: clamp(32px, 5vw, 72px); font-weight: 900; letter-spacing: -0.045em; line-height: 0.95; text-transform: uppercase; margin: 24px 0 48px; max-width: 18ch; }
+  .actions { display: flex; flex-wrap: wrap; gap: 24px; }
+  @media (max-width: 900px) { .why { grid-template-columns: 1fr; } .why h3 { margin-top: 24px; } }
+</style>

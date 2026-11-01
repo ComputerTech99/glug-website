@@ -1,0 +1,23 @@
+---
+interface Props { items: string[] }
+const { items } = Astro.props;
+const run = [...items, ...items];
+---
+<div class="ticker" aria-hidden="true">
+  <div class="track mono">
+    {run.map((item) => <span>{item}<b>✦</b></span>)}
+  </div>
+</div>
+
+<style>
+  .ticker {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 22px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .track { display: inline-flex; animation: scroll 40s linear infinite; font-size: 14px; letter-spacing: 0.06em; }
+  b { color: var(--sig-text); margin: 0 22px; font-weight: 400; }
+  @keyframes scroll { to { transform: translateX(-50%); } }
+</style>

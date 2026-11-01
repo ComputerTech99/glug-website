@@ -1,0 +1,34 @@
+---
+interface Props {
+  num: string;
+  label: string;
+  title?: string;
+  intro?: string;
+  level?: 'h1' | 'h2';
+}
+const { num, label, title, intro, level = 'h2' } = Astro.props;
+const Tag = level;
+---
+<header class="section-head">
+  <div>
+    <p class="lbl"><i>{num}</i> {label}</p>
+    <Tag class="h-display">{Astro.slots.has('title') ? <slot name="title" /> : title}</Tag>
+  </div>
+  {intro && <p class="intro">{intro}</p>}
+</header>
+
+<style>
+  .section-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: end;
+    margin-bottom: clamp(48px, 7vw, 72px);
+  }
+  .h-display { font-size: clamp(44px, 7vw, 112px); margin-top: 20px; }
+  .intro { font-size: 18px; line-height: 1.55; color: var(--muted); max-width: 420px; justify-self: end; margin: 0; }
+  @media (max-width: 900px) {
+    .section-head { grid-template-columns: 1fr; gap: 24px; }
+    .intro { justify-self: start; }
+  }
+</style>

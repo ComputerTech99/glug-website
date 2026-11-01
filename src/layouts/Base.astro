@@ -1,0 +1,53 @@
+---
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/page.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  /** Inner pages: nav joins a dark page header */
+  dark?: boolean;
+}
+const { title, description, ogImage = '/og-default.png', dark = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogUrl = new URL(ogImage, Astro.site);
+const fullTitle = title.includes('GLUG') ? title : `${title} — GLUG FET-JU`;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#F4F1EA" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="GLUG FET-JU" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogUrl} />
+  </head>
+  <body>
+    <a class="skip mono" href="#main">Skip to content</a>
+    <Nav dark={dark} />
+    <slot />
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .skip { position: absolute; left: 16px; top: -60px; background: var(--ink); color: var(--paper); padding: 10px 14px; z-index: 100; }
+  .skip:focus { top: 16px; }
+</style>

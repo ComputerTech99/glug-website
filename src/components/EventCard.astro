@@ -1,0 +1,59 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { formatEventDate, isUpcoming } from '../lib/events';
+import { buildNow } from '../lib/now';
+
+interface Props { event: CollectionEntry<'events'> }
+const { event } = Astro.props;
+const { title, date, venue, type, poster, registerUrl } = event.data;
+const upcoming = isUpcoming(event, buildNow());
+const TYPE_LABEL: Record<string, string> = {
+  workshop: 'Workshop', talk: 'Talk', hacknight: 'Hack Night', installfest: 'Install Fest', other: 'Event',
+};
+---
+<article class:list={['event-card', { 'on-ink': !upcoming }]} data-type={type}>
+  <a href={`/events/${event.id}/`} class="card-link">
+    <div class="top mono">
+      <time datetime={date.toISOString()}>{formatEventDate(date)}</time>
+      <span class="tag">{TYPE_LABEL[type]}</span>
+    </div>
+    {poster ? (
+      <Image src={poster} alt={`${title} poster`} widths={[400, 800]} sizes="(max-width: 900px) 82vw, 420px" class="poster" />
+    ) : (
+      <div class="poster poster-fallback grid-bg" aria-hidden="true"><span>{title}</span></div>
+    )}
+    <div class="body">
+      <h3>{title}</h3>
+      <p class="mono">{venue} · {upcoming ? (registerUrl ? 'Register →' : 'Details →') : 'Recap →'}</p>
+    </div>
+  </a>
+</article>
+
+<style>
+  .event-card {
+    background: var(--white);
+    border: 2px solid var(--ink);
+    box-shadow: var(--shadow-md);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    min-width: 0;
+  }
+  .event-card:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0 var(--ink); }
+  .event-card.on-ink { background: var(--ink); color: var(--paper); box-shadow: 6px 6px 0 var(--sig); }
+  .event-card.on-ink:hover { box-shadow: 9px 9px 0 var(--sig); }
+  .on-ink .top, .on-ink .poster { border-bottom-color: var(--line); }
+  .on-ink .tag { background: var(--line); color: var(--paper); }
+  .on-ink .poster-fallback { background-color: var(--ink); }
+  .card-link { display: flex; flex-direction: column; height: 100%; text-decoration: none; color: inherit; }
+  .top { display: flex; justify-content: space-between; gap: 12px; padding: 14px 18px; font-size: 12px; border-bottom: 2px solid var(--ink); }
+  .tag { color: var(--ink); background: var(--paper); padding: 0 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .poster { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-bottom: 2px solid var(--ink); display: block; }
+  .poster-fallback { display: flex; align-items: flex-end; padding: 18px; background-color: var(--paper); }
+  .poster-fallback span {
+    font-weight: 900; text-transform: uppercase; letter-spacing: -0.04em; line-height: 0.9;
+    font-size: clamp(28px, 3vw, 40px); overflow-wrap: anywhere;
+  }
+  .body { padding: 22px 18px 24px; }
+  h3 { font-size: 24px; letter-spacing: -0.03em; line-height: 1.1; margin: 0 0 10px; overflow-wrap: anywhere; }
+  .body p { font-size: 13px; color: var(--muted); margin: 0; }
+</style>

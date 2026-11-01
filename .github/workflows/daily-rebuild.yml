@@ -1,0 +1,20 @@
+# The site is static, so "upcoming" vs "past" events is decided at build time.
+# This triggers a Cloudflare Pages rebuild every night at 00:30 IST so events
+# move to the archive on their own.
+name: Daily rebuild
+
+on:
+  schedule:
+    - cron: '0 19 * * *' # 19:00 UTC = 00:30 IST
+  workflow_dispatch:
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Cloudflare Pages deploy hook
+        env:
+          CF_DEPLOY_HOOK: ${{ secrets.CF_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$CF_DEPLOY_HOOK" ]; then echo "CF_DEPLOY_HOOK secret not set"; exit 1; fi
+          curl -fsS -X POST "$CF_DEPLOY_HOOK"

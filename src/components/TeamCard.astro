@@ -1,0 +1,25 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+interface Props { member: CollectionEntry<'team'> }
+const { name, role, photo, github, linkedin } = Astro.props.member.data;
+---
+<article class="team-card">
+  <Image src={photo} alt={name} widths={[300, 600]} sizes="(max-width: 600px) 45vw, 280px" class="photo" />
+  <h3>{name}</h3>
+  <p class="role mono">{role}</p>
+  <p class="links mono">
+    {github && <a href={github} target="_blank" rel="noopener" aria-label={`${name} on GitHub`}>GitHub ↗</a>}
+    {linkedin && <a href={linkedin} target="_blank" rel="noopener" aria-label={`${name} on LinkedIn`}>LinkedIn ↗</a>}
+  </p>
+</article>
+
+<style>
+  .team-card { min-width: 0; }
+  .photo { width: 100%; aspect-ratio: 1; object-fit: cover; border: 2px solid var(--ink); box-shadow: var(--shadow-md); background: var(--white); }
+  h3 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin: 24px 0 4px; overflow-wrap: anywhere; }
+  .role { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 12px; }
+  .links { display: flex; gap: 16px; font-size: 12px; margin: 0; }
+  .links a { text-decoration: none; }
+  .links a:hover { color: var(--sig-text); }
+</style>

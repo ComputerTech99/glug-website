@@ -1,0 +1,35 @@
+# Learning resources shown on /resources.
+# level: beginner | intermediate | advanced
+- topic: Linux basics
+  links:
+    - title: The Linux Command Line (free book)
+      url: https://linuxcommand.org/tlcl.php
+      level: beginner
+    - title: Linux Journey
+      url: https://linuxjourney.com/
+      level: beginner
+    - title: The Missing Semester of Your CS Education (MIT)
+      url: https://missing.csail.mit.edu/
+      level: intermediate
+- topic: Git & GitHub
+  links:
+    - title: Pro Git (free book)
+      url: https://git-scm.com/book/en/v2
+      level: beginner
+    - title: Learn Git Branching
+      url: https://learngitbranching.js.org/
+      level: beginner
+    - title: Oh Shit, Git!?!
+      url: https://ohshitgit.com/
+      level: intermediate
+- topic: Contributing to open source
+  links:
+    - title: How to Contribute to Open Source (opensource.guide)
+      url: https://opensource.guide/how-to-contribute/
+      level: beginner
+    - title: Good First Issue
+      url: https://goodfirstissue.dev/
+      level: beginner
+    - title: Google Summer of Code — student guide
+      url: https://google.github.io/gsocguides/student/
+      level: advanced

@@ -1,0 +1,65 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Button from '../components/Button.astro';
+import { timeline } from '../lib/data';
+import { SITE } from '../data/site';
+---
+<Base title="About" description="What GLUG FET-JU is, why free software matters, and how we got here." dark>
+  <main id="main">
+    <section class="page-top on-ink grid-bg">
+      <div class="wrap">
+      <SectionHead level="h1" num="//" label="About" intro="The GNU/Linux Users Group at the Faculty of Engineering & Technology, Jain University.">
+        <Fragment slot="title">Software freedom, <em>in practice.</em></Fragment>
+      </SectionHead>
+      </div>
+    </section>
+    <div class="wrap">
+
+    <section class="page-block manifesto">
+      <!-- TODO-REAL: replace with the club's own words -->
+      <p class="big">We believe software should respect the people who use it — free to run, study, change and share.</p>
+      <div class="cols">
+        <p>GLUG FET-JU is a student community that learns Linux and free software together. We run hands-on workshops, help people switch to Linux at install fests, and contribute back to the projects we depend on.</p>
+        <p>Nobody here started as an expert. You don't need to know anything to show up — only be curious and willing to break things (and then fix them).</p>
+      </div>
+    </section>
+
+    <section class="page-block" aria-labelledby="history-h">
+      <h2 id="history-h" class="lbl"><i>01</i> History</h2>
+      <ol class="timeline">
+        {timeline.map((t) => (
+          <li><span class="year mono">{t.year}</span><p>{t.text}</p></li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="page-block fsmk" aria-labelledby="fsmk-h">
+      <h2 id="fsmk-h" class="lbl"><i>02</i> Part of a movement</h2>
+      <div class="fsmk-card">
+        <h3 class="h-display">FSMK</h3>
+        <p>We're part of the wider free software community in Karnataka, alongside <a href={SITE.fsmkUrl} target="_blank" rel="noopener">Free Software Movement Karnataka</a> — which runs camps, campaigns and student GLUGs across the state.</p>
+        <Button href={SITE.fsmkUrl} external>Visit fsmk.org ↗</Button>
+      </div>
+    </section>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .big { font-size: clamp(28px, 3.6vw, 52px); line-height: 1.15; letter-spacing: -0.03em; font-weight: 700; max-width: 22ch; margin: 0 0 56px; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; max-width: 1000px; }
+  .cols p { font-size: 18px; line-height: 1.65; color: var(--muted); margin: 0; }
+  .timeline { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .timeline li { display: grid; grid-template-columns: 200px 1fr; gap: 32px; padding: 32px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+  .year { color: var(--sig-display); font-size: clamp(36px, 4vw, 56px); font-weight: 600; }
+  .timeline p { font-size: 20px; line-height: 1.5; margin: 0; max-width: 56ch; }
+  .fsmk-card { background: var(--white); border: 2px solid var(--ink); box-shadow: var(--shadow-lg); padding: clamp(28px, 5vw, 64px); max-width: 860px; }
+  .fsmk-card h3 { font-size: clamp(56px, 9vw, 128px); }
+  .fsmk-card p { font-size: 18px; line-height: 1.6; max-width: 56ch; margin: 24px 0 32px; }
+  .fsmk-card p a { text-decoration-color: var(--sig); text-underline-offset: 4px; }
+  @media (max-width: 760px) {
+    .cols { grid-template-columns: 1fr; gap: 24px; }
+    .timeline li { grid-template-columns: 1fr; gap: 8px; }
+  }
+</style>

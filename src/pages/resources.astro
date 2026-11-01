@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { resources } from '../lib/data';
+---
+<Base title="Resources" description="Curated free resources for learning Linux, Git and contributing to open source." dark>
+  <main id="main">
+    <section class="page-top on-ink grid-bg">
+      <div class="wrap">
+      <SectionHead level="h1" num="//" label="Resources" title="Learn in the open" intro="Free, hand-picked material we actually recommend. Start at the top of a topic and work down." />
+      </div>
+    </section>
+    <div class="wrap">
+    {resources.map((t, i) => (
+      <section class="page-block topic">
+        <p class="lbl"><i>0{i + 1}</i> Topic</p>
+        <h2>{t.topic}</h2>
+        <ul>
+          {t.links.map((l) => (
+            <li>
+              <a href={l.url} target="_blank" rel="noopener">{l.title} <span aria-hidden="true">↗</span></a>
+              <span class={`level level--${l.level} mono`}>{l.level}</span>
+              {l.note && <p class="note">{l.note}</p>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+    </div>
+  </main>
+</Base>
+
+<style>
+  .topic h2 { font-size: clamp(32px, 4.5vw, 64px); font-weight: 900; text-transform: uppercase; letter-spacing: -0.045em; line-height: 0.95; margin: 16px 0 32px; }
+  ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  li { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px 24px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+  li a { font-size: clamp(18px, 2vw, 24px); font-weight: 700; letter-spacing: -0.02em; text-decoration: none; overflow-wrap: anywhere; }
+  li a:hover { color: var(--sig-text); }
+  .level { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; border: 2px solid var(--ink); padding: 4px 10px; background: var(--white); }
+  .level--intermediate { background: var(--paper); }
+  .level--advanced { background: var(--ink); color: var(--paper); }
+  .note { flex-basis: 100%; margin: 0; color: var(--muted); }
+</style>

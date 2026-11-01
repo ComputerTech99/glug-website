@@ -1,0 +1,124 @@
+---
+import Logo from './Logo.astro';
+import { NAV_LINKS, JOIN_LINK } from '../lib/nav';
+import { SITE } from '../data/site';
+
+interface Props { dark?: boolean }
+const { dark = false } = Astro.props;
+const path = Astro.url.pathname;
+const current = (href: string) => (path.startsWith(href) ? 'page' : undefined);
+---
+<div class:list={['site-nav-band', { 'on-ink': dark }]}>
+<header class="site-nav wrap">
+  <a class="brand mono" href="/" aria-label={`${SITE.name} home`}>
+    <span class="mark"><Logo variant="mark" title="" /></span>
+    <b>{SITE.shortName}</b>
+  </a>
+  <nav class="nav-links mono" aria-label="Main">
+    {NAV_LINKS.map((l) => <a href={l.href} aria-current={current(l.href)}>{l.label}</a>)}
+    <a class="join" href={JOIN_LINK.href} aria-current={current(JOIN_LINK.href)}>{JOIN_LINK.label} →</a>
+  </nav>
+  <button class="menu-btn mono" type="button" aria-expanded="false" aria-controls="mobile-menu">Menu</button>
+
+  <div id="mobile-menu" class="overlay on-ink grid-bg" hidden>
+    <div class="overlay-top wrap">
+      <span class="mono"><b>{SITE.shortName}</b></span>
+      <button class="close-btn mono" type="button">Close ✕</button>
+    </div>
+    <nav class="overlay-links wrap" aria-label="Mobile">
+      {NAV_LINKS.map((l, i) => (
+        <a href={l.href} aria-current={current(l.href)}><span class="num mono">0{i + 1}</span><span class="h-display">{l.label}</span></a>
+      ))}
+      <a class="join" href={JOIN_LINK.href} aria-current={current(JOIN_LINK.href)}><span class="num mono">0{NAV_LINKS.length + 1}</span><span class="h-display">{JOIN_LINK.label} →</span></a>
+    </nav>
+    <div class="overlay-foot wrap mono">
+      <p>Free as in freedom.</p>
+      <p class="socials">
+        <a href={SITE.socials.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+        <a href={SITE.socials.github} target="_blank" rel="noopener">GitHub</a>
+        <a href={SITE.socials.instagram} target="_blank" rel="noopener">Instagram</a>
+      </p>
+    </div>
+  </div>
+</header>
+</div>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.menu-btn')!;
+  const overlay = document.getElementById('mobile-menu')!;
+  const closeBtn = overlay.querySelector<HTMLButtonElement>('.close-btn')!;
+  const focusables = () => [...overlay.querySelectorAll<HTMLElement>('a, button')];
+
+  const open = () => {
+    overlay.hidden = false;
+    btn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  };
+  const close = () => {
+    overlay.hidden = true;
+    btn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    btn.focus();
+  };
+
+  btn.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+  overlay.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') return close();
+    if (e.key !== 'Tab') return;
+    const f = focusables();
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+</script>
+
+<style>
+  .site-nav { display: flex; justify-content: space-between; align-items: center; padding-block: 24px; font-size: 13px; }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; letter-spacing: 0.04em; }
+  .mark { width: 34px; display: block; }
+  .on-ink .mark { background: var(--white); color: var(--ink); border: 2px solid var(--paper); width: 38px; padding: 2px; }
+  .nav-links { display: flex; gap: 36px; }
+  .nav-links a { text-decoration: none; position: relative; }
+  .nav-links a:hover, .nav-links a[aria-current='page'] { color: var(--sig-text); }
+  .nav-links a[aria-current='page']::after { content: ''; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; background: var(--sig); }
+  .nav-links .join { color: var(--sig-text); font-weight: 600; }
+  .menu-btn, .close-btn {
+    display: none;
+    background: none;
+    border: 2px solid currentColor;
+    box-shadow: 3px 3px 0 currentColor;
+    padding: 8px 14px;
+    font-size: 13px;
+    color: inherit;
+    cursor: pointer;
+  }
+  .close-btn { display: inline-block; }
+  .overlay { position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column; }
+  .overlay[hidden] { display: none; }
+  /* .wrap uses margin-inline:auto, which shrink-wraps flex items in a column; force full width */
+  .overlay > .wrap { width: 100%; }
+  .overlay-top { display: flex; justify-content: space-between; align-items: center; padding-block: 24px; font-size: 13px; }
+  .overlay-links { display: flex; flex-direction: column; margin-top: clamp(24px, 6vh, 56px); }
+  .overlay-links a:first-child { border-top: 1px solid var(--line); }
+  .overlay-links a {
+    display: flex; align-items: baseline; gap: 16px;
+    padding: 14px 0; border-bottom: 1px solid var(--line);
+    text-decoration: none;
+  }
+  .overlay-links .h-display { font-size: clamp(36px, 11vw, 64px); }
+  .overlay-links .num { font-size: 12px; color: var(--muted); min-width: 2ch; }
+  .overlay-links a[aria-current='page'] .h-display { color: var(--sig); }
+  .overlay-links a[aria-current='page'] .num { color: var(--sig); }
+  .overlay-links .join .h-display { color: var(--sig); }
+  .overlay-foot { margin-top: auto; padding-block: 24px 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--muted); }
+  .overlay-foot p { margin: 0; }
+  .overlay-foot .socials { display: flex; gap: 18px; }
+  .overlay-foot a { text-decoration: none; color: var(--paper); }
+  .overlay { overflow-y: auto; }
+  @media (max-width: 760px) {
+    .nav-links { display: none; }
+    .menu-btn { display: inline-block; }
+  }
+</style>

@@ -26,7 +26,7 @@ It must not look templated/"AI-generated". It must work equally well on mobile a
 | Framework | **Astro** (static output) + content collections | Content-driven, near-zero JS, typed content |
 | Data storage | **Markdown/YAML files in the repo** — no database | Maintainer updates via code; visitors submit nothing |
 | Visitor input | None on-site; links out to Google Form / WhatsApp / Discord | Keeps site static |
-| Hosting | **Cloudflare Pages**, auto-deploy on push to `main` | Free, fast in India, preview deploys |
+| Hosting | **GitHub Pages** at `/glug-website/` via GitHub Actions, deploy on push to `main` | Free, no third-party account; all internal URLs go through `url()` so the base path works |
 | Styling | Plain CSS with custom properties (no Tailwind/UI kit) | Full control of the bespoke look; small footprint |
 | JS | Only for small progressive enhancements (count-up stats, events filter) | Site fully usable with JS off |
 | Licence | Site code GPL-3.0 | FOSS club |
@@ -126,7 +126,7 @@ order?: number         # sort within year
 - `resources.yaml` — `[{ topic, links: [{ title, url, level, note? }] }]`.
 - `timeline.yaml` — `[{ year, text }]`.
 
-**Upcoming vs past** is computed at build time. Because the site is static, a scheduled rebuild keeps this accurate: a Cloudflare Pages deploy hook triggered daily (GitHub Actions cron, ~00:30 IST).
+**Upcoming vs past** is computed at build time. Because the site is static, a scheduled rebuild keeps this accurate: the GitHub Pages deploy workflow also runs on a daily cron (~00:30 IST).
 
 ## 6. Project structure
 

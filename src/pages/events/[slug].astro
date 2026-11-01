@@ -1,4 +1,5 @@
 ---
+import { url } from '../../lib/url';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
@@ -25,7 +26,7 @@ const when = endDate ? `${formatEventDate(date)} – ${formatEventDate(endDate)}
   <main id="main">
     <section class="page-top on-ink grid-bg">
     <div class="wrap">
-    <p class="back mono"><a href="/events/">← All events</a></p>
+    <p class="back mono"><a href={url('/events/')}>← All events</a></p>
     <header class="head">
       <p class="lbl"><i>//</i> {TYPE_LABEL[type]}</p>
       <h1 class="h-display">{title}</h1>

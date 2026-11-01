@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 import Logo from './Logo.astro';
 import { NAV_LINKS, JOIN_LINK } from '../lib/nav';
 import { SITE } from '../data/site';
@@ -10,7 +11,7 @@ const current = (href: string) => (path.startsWith(href) ? 'page' : undefined);
 ---
 <div class:list={['site-nav-band', { 'on-ink': dark }]}>
 <header class="site-nav wrap">
-  <a class="brand mono" href="/" aria-label={`${SITE.name} home`}>
+  <a class="brand mono" href={url('/')} aria-label={`${SITE.name} home`}>
     <span class="mark"><Logo variant="mark" title="" /></span>
     <b>{SITE.shortName}</b>
   </a>

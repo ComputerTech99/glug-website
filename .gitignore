@@ -30,3 +30,4 @@ test-results/
 playwright-report/
 .lighthouseci/
 .dist-future/
+.dist-base/

@@ -1,0 +1,51 @@
+# Builds the site and publishes it to GitHub Pages.
+# Runs on every push to main, and nightly at 00:30 IST so past events move
+# to the archive on their own (the site decides upcoming vs past at build time).
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 19 * * *' # 19:00 UTC = 00:30 IST
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Build
+        run: npm run build
+        env:
+          # Project site URL: https://computertech99.github.io/glug-website/
+          # With a custom domain: set GLUG_SITE to it and GLUG_BASE to '/'.
+          GLUG_SITE: https://computertech99.github.io
+          GLUG_BASE: /glug-website/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

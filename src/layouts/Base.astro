@@ -5,6 +5,7 @@ import '../styles/base.css';
 import '../styles/page.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Intro from '../components/Intro.astro';
 
 interface Props {
   title: string;
@@ -23,6 +24,17 @@ const fullTitle = title.includes('GLUG') ? title : `${title} — GLUG FET-JU`;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      // Logo intro: once per browser session, only with JS on and motion allowed.
+      (function () {
+        try {
+          if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          if (sessionStorage.getItem('glug-intro')) return;
+          sessionStorage.setItem('glug-intro', '1');
+          document.documentElement.classList.add('intro');
+        } catch (e) {}
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
     <meta name="theme-color" content="#F4F1EA" />
     <title>{fullTitle}</title>
@@ -41,6 +53,7 @@ const fullTitle = title.includes('GLUG') ? title : `${title} — GLUG FET-JU`;
     <meta name="twitter:image" content={ogUrl} />
   </head>
   <body>
+    <Intro />
     <a class="skip mono" href="#main">Skip to content</a>
     <Nav dark={dark} />
     <slot />

@@ -13,7 +13,8 @@ export default defineConfig({
   testDir: 'tests/e2e',
   fullyParallel: true,
   reporter: 'line',
-  use: { baseURL: 'http://localhost:4521' },
+  // reducedMotion skips the logo intro so it doesn't block clicks; intro.spec.ts opts back in.
+  use: { baseURL: 'http://localhost:4521', reducedMotion: 'reduce' },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: [
     server('2026-11-01T06:00:00Z', './dist', 4521), server('2030-01-01T06:00:00Z', './.dist-future', 4522),

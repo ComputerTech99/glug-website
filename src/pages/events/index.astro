@@ -1,0 +1,99 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import EventCard from '../../components/EventCard.astro';
+import { splitEvents, groupBySemester } from '../../lib/events';
+import { buildNow } from '../../lib/now';
+import { SITE } from '../../data/site';
+
+const { upcoming, past } = splitEvents(await getCollection('events'), buildNow());
+const semesters = groupBySemester(past);
+const FILTERS = [
+  { value: 'all', label: 'All' },
+  { value: 'workshop', label: 'Workshop' },
+  { value: 'talk', label: 'Talk' },
+  { value: 'hacknight', label: 'Hack Night' },
+  { value: 'installfest', label: 'Install Fest' },
+  { value: 'other', label: 'Other' },
+];
+---
+<Base title="Events" description="Upcoming workshops, talks, hack nights and install fests from GLUG FET-JU — plus everything we've run before.">
+  <main id="main" class="wrap">
+    <section class="page-top">
+      <SectionHead level="h1" num="//" label="Events" title="Events" intro="Workshops, talks, hack nights and install fests. Open to everyone at FET." />
+    </section>
+
+    <div class="filters mono" role="group" aria-label="Filter events by type" hidden>
+      {FILTERS.map((f, i) => <button type="button" data-filter={f.value} aria-pressed={i === 0 ? 'true' : 'false'}>{f.label}</button>)}
+    </div>
+
+    <section id="upcoming" class="block" aria-labelledby="upcoming-h">
+      <h2 id="upcoming-h" class="lbl"><i>01</i> Upcoming</h2>
+      {upcoming.length > 0 ? (
+        <div class="cards">{upcoming.map((e) => <EventCard event={e} />)}</div>
+      ) : (
+        <p class="empty mono">Nothing scheduled right now — <a href={SITE.socials.linkedin} target="_blank" rel="noopener">follow us on LinkedIn</a> for the next one.</p>
+      )}
+    </section>
+
+    {semesters.length > 0 && (
+      <section id="past" class="block" aria-labelledby="past-h">
+        <h2 id="past-h" class="lbl"><i>02</i> Past events</h2>
+        {semesters.map((s) => (
+          <div class="semester" data-semester={s.key}>
+            <h3 class="sem">{s.label}</h3>
+            <div class="cards">{s.events.map((e) => <EventCard event={e} />)}</div>
+          </div>
+        ))}
+      </section>
+    )}
+    <p class="no-match mono" hidden>No events of this type yet.</p>
+  </main>
+</Base>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('.filters');
+  if (bar) {
+    bar.hidden = false;
+    const buttons = [...bar.querySelectorAll<HTMLButtonElement>('button')];
+    const cards = [...document.querySelectorAll<HTMLElement>('.event-card')];
+    const groups = [...document.querySelectorAll<HTMLElement>('.semester, #upcoming')];
+    const noMatch = document.querySelector<HTMLElement>('.no-match')!;
+    bar.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest('button');
+      if (!btn) return;
+      const f = btn.dataset.filter!;
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      cards.forEach((c) => (c.hidden = f !== 'all' && c.dataset.type !== f));
+      groups.forEach((g) => {
+        if (g.id === 'upcoming') return;
+        g.hidden = !g.querySelector('.event-card:not([hidden])');
+      });
+      noMatch.hidden = cards.some((c) => !c.hidden);
+    });
+  }
+</script>
+
+<style>
+  .page-top { padding-block: clamp(64px, 12vh, 140px) 0; }
+  .filters { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 64px; }
+  .filters[hidden] { display: none; }
+  .filters button {
+    font: inherit; font-size: 13px; background: var(--white); color: var(--ink);
+    border: 2px solid var(--ink); padding: 8px 14px; cursor: pointer; box-shadow: 3px 3px 0 var(--ink);
+  }
+  .filters button[aria-pressed='true'] { background: var(--sig); }
+  .block { padding-bottom: var(--section-pad); }
+  .block > .lbl { margin: 0 0 32px; }
+  .semester + .semester { margin-top: 72px; }
+  .semester[hidden] { display: none; }
+  .sem { font-size: clamp(28px, 3.5vw, 44px); font-weight: 900; text-transform: uppercase; letter-spacing: -0.04em; margin: 0 0 28px; padding-top: 24px; border-top: 1px solid var(--line); }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+  .cards :global(.event-card[hidden]) { display: none; }
+  .empty { font-size: 15px; border: 2px dashed var(--line); padding: 32px; }
+  .empty a { color: var(--ink); text-decoration-color: var(--sig); text-underline-offset: 4px; }
+  .no-match { padding-bottom: var(--section-pad); }
+  @media (max-width: 1000px) { .cards { grid-template-columns: 1fr 1fr; gap: 28px; } }
+  @media (max-width: 600px) { .cards { grid-template-columns: 1fr; } }
+</style>

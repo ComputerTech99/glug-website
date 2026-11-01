@@ -66,10 +66,14 @@ const FILTERS = [
       const f = btn.dataset.filter!;
       buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
       cards.forEach((c) => (c.hidden = f !== 'all' && c.dataset.type !== f));
-      groups.forEach((g) => {
-        if (g.id === 'upcoming') return;
-        g.hidden = !g.querySelector('.event-card:not([hidden])');
-      });
+      const hasVisible = (el: Element) => !!el.querySelector('.event-card:not([hidden])');
+      // Semester groups and the Past section hide when the filter empties them.
+      groups.forEach((g) => { if (g.id !== 'upcoming') g.hidden = !hasVisible(g); });
+      const past = document.getElementById('past');
+      if (past) past.hidden = !hasVisible(past);
+      // Upcoming keeps its "nothing scheduled" message under "All"; under a type filter it hides when empty.
+      const up = document.getElementById('upcoming');
+      if (up) up.hidden = f !== 'all' && !hasVisible(up);
       noMatch.hidden = cards.some((c) => !c.hidden);
     });
   }
@@ -87,7 +91,7 @@ const FILTERS = [
   .block { padding-bottom: var(--section-pad); }
   .block > .lbl { margin: 0 0 32px; }
   .semester + .semester { margin-top: 72px; }
-  .semester[hidden] { display: none; }
+  .semester[hidden], .block[hidden] { display: none; }
   .sem { font-size: clamp(28px, 3.5vw, 44px); font-weight: 900; text-transform: uppercase; letter-spacing: -0.04em; margin: 0 0 28px; padding-top: 24px; border-top: 1px solid var(--line); }
   .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
   .cards :global(.event-card[hidden]) { display: none; }

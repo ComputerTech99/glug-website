@@ -45,3 +45,11 @@ test('sitemap and robots exist', async ({ request }) => {
   const robots = await (await request.get('/robots.txt')).text();
   expect(robots).toContain('Sitemap:');
 });
+
+test('keyboard focus outline is contrast-safe on light backgrounds', async ({ page }) => {
+  await page.goto('/about/');
+  await page.keyboard.press('Tab'); // skip link
+  await page.keyboard.press('Tab'); // brand link (on paper)
+  const color = await page.evaluate(() => getComputedStyle(document.activeElement!).outlineColor);
+  expect(color).toBe('rgb(199, 58, 10)'); // --sig-text, 4.61:1 on paper
+});

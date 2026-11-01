@@ -12,7 +12,7 @@ body {
 }
 img, svg { display: block; max-width: 100%; height: auto; }
 a { color: inherit; }
-:focus-visible { outline: 2px solid var(--sig); outline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--sig-text); outline-offset: 3px; }
 ::selection { background: var(--sig); color: var(--ink); }
 
 .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }

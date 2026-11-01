@@ -6,7 +6,7 @@ import { buildNow } from '../lib/now';
 
 interface Props { event: CollectionEntry<'events'> }
 const { event } = Astro.props;
-const { title, date, venue, type, poster } = event.data;
+const { title, date, venue, type, poster, registerUrl } = event.data;
 const upcoming = isUpcoming(event, buildNow());
 const TYPE_LABEL: Record<string, string> = {
   workshop: 'Workshop', talk: 'Talk', hacknight: 'Hack Night', installfest: 'Install Fest', other: 'Event',
@@ -25,7 +25,7 @@ const TYPE_LABEL: Record<string, string> = {
     )}
     <div class="body">
       <h3>{title}</h3>
-      <p class="mono">{venue} · {upcoming ? 'Register →' : 'Recap →'}</p>
+      <p class="mono">{venue} · {upcoming ? (registerUrl ? 'Register →' : 'Details →') : 'Recap →'}</p>
     </div>
   </a>
 </article>

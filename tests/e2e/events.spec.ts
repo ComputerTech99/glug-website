@@ -54,3 +54,23 @@ test('unknown event slug returns 404', async ({ page }) => {
   const res = await page.goto('/events/does-not-exist/');
   expect(res?.status()).toBe(404);
 });
+
+test('filtering hides sections that end up with no cards', async ({ page }) => {
+  await page.goto('/events/');
+  await page.getByRole('button', { name: 'Hack Night' }).click();
+  await expect(page.locator('#upcoming')).toBeHidden();
+  await expect(page.locator('#past')).toBeVisible();
+  await page.getByRole('button', { name: 'Install Fest' }).click();
+  await expect(page.locator('#upcoming')).toBeVisible();
+  await expect(page.locator('#past')).toBeHidden();
+  await page.getByRole('button', { name: 'All', exact: true }).click();
+  await expect(page.locator('#upcoming')).toBeVisible();
+  await expect(page.locator('#past')).toBeVisible();
+});
+
+test('upcoming card without a registerUrl says Details, not Register', async ({ page }) => {
+  await page.goto('/events/');
+  const card = page.locator('.event-card', { hasText: 'Containerization' });
+  await expect(card).toContainText('Details →');
+  await expect(card).not.toContainText('Register');
+});

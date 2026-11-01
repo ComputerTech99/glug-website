@@ -95,6 +95,8 @@ Anything marked `TODO-REAL` is placeholder content to replace.
 - **CI** (`.github/workflows/ci.yml`) runs the content check, unit tests, browser tests and Lighthouse on every push and pull request.
 - **Daily rebuild** (`.github/workflows/daily-rebuild.yml`) hits a Cloudflare deploy hook every night so past events move to the archive.
 
+> **Heads-up: GitHub pauses scheduled workflows after 60 days with no commits.** If the repo goes quiet (e.g. over a semester break), the nightly rebuild stops and past events stop moving to the archive. Fix: GitHub → **Actions → Daily rebuild → Enable workflow**, or just push any commit. You can also run it by hand there with **Run workflow**.
+
 ### One-time setup
 
 1. Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to Git** → pick this repo.
